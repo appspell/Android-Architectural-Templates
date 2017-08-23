@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import com.appspell.android.templates.R
 import com.appspell.android.templates.mvi.list.model.entity.DataEntity
-import com.example.glukharev.githubrepos.repos.view.ListAdapter
 
 class ListViewImpl(rootView: View) : ListView {
 

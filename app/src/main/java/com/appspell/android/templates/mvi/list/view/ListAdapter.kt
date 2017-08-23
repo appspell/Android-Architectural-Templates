@@ -1,4 +1,4 @@
-package com.example.glukharev.githubrepos.repos.view
+package com.appspell.android.templates.mvi.list.view
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.appspell.android.templates.R
 import com.appspell.android.templates.mvi.list.model.entity.DataEntity
-import com.appspell.android.templates.mvi.list.view.OnListItemClick
 
 class ListAdapter(val listener: OnListItemClick) : RecyclerView.Adapter<ListAdapter.ListViewHolder>() {
 
