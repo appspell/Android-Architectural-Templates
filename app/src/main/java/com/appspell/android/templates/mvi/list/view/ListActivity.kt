@@ -20,7 +20,8 @@ class ListActivity : AppCompatActivity() {
         val interactor = ListInteractorImpl()
         val router = ListRouterImpl()
         presenter = ListPresenterImpl(view, interactor, router)
-        presenter.init()
+        presenter.create()
+        presenter.restoreViewState(savedInstanceState)
     }
 
     override fun onResume() {
@@ -32,4 +33,10 @@ class ListActivity : AppCompatActivity() {
         presenter.unBind()
         super.onPause()
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        presenter.saveViewState(outState)
+    }
+
 }

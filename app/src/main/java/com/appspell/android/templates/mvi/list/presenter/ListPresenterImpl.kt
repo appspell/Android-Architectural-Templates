@@ -1,7 +1,8 @@
 package com.appspell.android.templates.mvi.list.presenter
 
+import android.os.Bundle
 import com.appspell.android.templates.mvi.list.model.ListInteractor
-import com.appspell.android.templates.mvi.list.model.entity.DataEntity
+import com.appspell.android.templates.mvi.list.model.ListViewState
 import com.appspell.android.templates.mvi.list.router.ListRouter
 import com.appspell.android.templates.mvi.list.view.ListView
 import com.appspell.android.templates.mvi.list.view.OnListItemClick
@@ -14,16 +15,18 @@ class ListPresenterImpl(
         val router: ListRouter
 ) : ListPresenter, OnListItemClick {
 
+    val SAVED_VIEW_TATE = "SAVED_VIEW_TATE"
+
     lateinit var disposable: Disposable
 
-    override fun init() {
+    override fun create() {
         view.initViews(this)
     }
 
     override fun bind() {
-        disposable = interactor.requestList()!!
+        disposable = interactor.requestList()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { list: List<DataEntity> -> view.updateList(list) }
+                .subscribe { viewState: ListViewState -> updateUI(viewState) }
     }
 
     override fun unBind() {
@@ -32,7 +35,29 @@ class ListPresenterImpl(
         }
     }
 
+    override fun saveViewState(outState: Bundle) {
+        outState.putParcelable(SAVED_VIEW_TATE, interactor.getLastViewState())
+    }
+
+    override fun restoreViewState(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            return
+        }
+        interactor.setLastViewState(savedInstanceState.getParcelable(SAVED_VIEW_TATE))
+    }
+
     override fun onItemClicked() {
         router.openCatalogItem()
     }
+
+    private fun updateUI(viewState: ListViewState) {
+        interactor.setLastViewState(viewState);
+        if (viewState.loading) {
+            view.showProgress()
+        } else {
+            view.hideProgress()
+        }
+        view.updateList(viewState.list)
+    }
 }
+
