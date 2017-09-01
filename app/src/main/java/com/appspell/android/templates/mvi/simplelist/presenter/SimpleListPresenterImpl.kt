@@ -1,10 +1,10 @@
-package com.appspell.android.templates.mvi.list.presenter
+package com.appspell.android.templates.mvi.simplelist.presenter
 
-import com.appspell.android.templates.mvi.list.model.SimpleListInteractor
-import com.appspell.android.templates.mvi.list.model.SimpleListViewState
-import com.appspell.android.templates.mvi.list.router.SimpleListRouter
-import com.appspell.android.templates.mvi.list.view.OnSimpleListItemClick
-import com.appspell.android.templates.mvi.list.view.SimpleListView
+import com.appspell.android.templates.mvi.simplelist.model.SimpleListInteractor
+import com.appspell.android.templates.mvi.simplelist.model.SimpleListViewState
+import com.appspell.android.templates.mvi.simplelist.router.SimpleListRouter
+import com.appspell.android.templates.mvi.simplelist.view.OnSimpleListItemClick
+import com.appspell.android.templates.mvi.simplelist.view.SimpleListView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 

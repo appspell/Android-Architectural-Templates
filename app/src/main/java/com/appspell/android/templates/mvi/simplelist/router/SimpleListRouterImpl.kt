@@ -1,4 +1,4 @@
-package com.appspell.android.templates.mvi.list.router
+package com.appspell.android.templates.mvi.simplelist.router
 
 class SimpleListRouterImpl : SimpleListRouter {
     override fun openCatalogItem() {

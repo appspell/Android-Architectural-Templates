@@ -1,4 +1,4 @@
-package com.appspell.android.templates.mvi.list.model
+package com.appspell.android.templates.mvi.simplelist.model
 
 import io.reactivex.Observable
 

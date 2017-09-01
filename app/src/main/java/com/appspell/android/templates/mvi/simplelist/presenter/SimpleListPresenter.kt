@@ -1,4 +1,4 @@
-package com.appspell.android.templates.mvi.list.presenter
+package com.appspell.android.templates.mvi.simplelist.presenter
 
 interface SimpleListPresenter {
     fun create()

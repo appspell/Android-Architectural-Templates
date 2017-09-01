@@ -19,7 +19,7 @@
             <!--</intent-filter>-->
         </activity>
 
-        <activity android:name=".mvi.list.view.SimpleListActivity">
+        <activity android:name=".mvi.simplelist.view.SimpleListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

@@ -1,5 +1,6 @@
-package com.appspell.android.templates.mvi.list.view
+package com.appspell.android.templates.mvi.simplelist.view
 
+import android.app.Activity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -7,9 +8,9 @@ import android.view.View
 import android.widget.ProgressBar
 import com.appspell.android.templates.R
 
-class SimpleListViewImpl(rootView: View) : SimpleListView {
-    private var progress: ProgressBar = rootView.findViewById(R.id.progress) as ProgressBar
-    private val list: RecyclerView = rootView.findViewById(R.id.list) as RecyclerView
+class SimpleListViewImpl(activity: Activity) : SimpleListView {
+    private var progress: ProgressBar = activity.findViewById(R.id.progress) as ProgressBar
+    private val list: RecyclerView = activity.findViewById(R.id.list) as RecyclerView
 
     private lateinit var adapterSimple: SimpleListAdapter
 

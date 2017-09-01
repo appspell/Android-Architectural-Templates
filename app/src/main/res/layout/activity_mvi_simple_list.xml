@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    tools:context="com.appspell.android.templates.mvi.list.view.SimpleListActivity">
+    tools:context="com.appspell.android.templates.mvi.simplelist.view.SimpleListActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list"

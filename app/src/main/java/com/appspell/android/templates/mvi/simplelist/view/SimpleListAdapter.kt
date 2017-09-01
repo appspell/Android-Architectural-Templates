@@ -1,4 +1,4 @@
-package com.appspell.android.templates.mvi.list.view
+package com.appspell.android.templates.mvi.simplelist.view
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
