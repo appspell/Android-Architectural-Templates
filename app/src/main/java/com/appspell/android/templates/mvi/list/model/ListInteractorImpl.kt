@@ -21,10 +21,8 @@ class ListInteractorImpl : ListInteractor {
         val page = 1
         val user = "square" //@FIXME any user name for testing
 
-        return Observable
-                .just(viewState)
-                .flatMap {
-                    savedViewState: ListViewState? ->
+        return useCache()
+                .flatMap { savedViewState: ListViewState? ->
                     if (!validateCache(savedViewState, page, user)) {
                         return@flatMap apiCall(page, user)
                     } else {
@@ -33,6 +31,10 @@ class ListInteractorImpl : ListInteractor {
                 }
                 .subscribeOn(Schedulers.io())
 
+    }
+
+    private fun useCache(): Observable<ListViewState> {
+        return Observable.just(viewState)
     }
 
     private fun apiCall(page: Int, user: String): Observable<ListViewState> {
