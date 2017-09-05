@@ -15,23 +15,32 @@ class ListPresenterImpl(
         val router: ListRouter
 ) : ListPresenter, OnListItemClick {
 
-    val SAVED_VIEW_TATE = "SAVED_VIEW_TATE"
+    val SAVED_VIEW_TATE = "SAVED_VIEW_STATE"
 
-    lateinit var disposable: Disposable
+    lateinit var listSubscriber: Disposable
+    lateinit var refreshSubscriber: Disposable
 
     override fun create() {
         view.initViews(this)
     }
 
     override fun bind() {
-        disposable = interactor.requestList()
+        listSubscriber = interactor.requestList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { viewState: ListViewState -> updateUI(viewState) }
+
+        refreshSubscriber = view.refreshIntent()
+                .switchMap { interactor.requestList() }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { viewState: ListViewState -> updateUI(viewState) }
     }
 
     override fun unBind() {
-        if (!disposable.isDisposed) {
-            disposable.dispose()
+        if (!listSubscriber.isDisposed) {
+            listSubscriber.dispose()
+        }
+        if (!refreshSubscriber.isDisposed) {
+            refreshSubscriber.dispose()
         }
     }
 
