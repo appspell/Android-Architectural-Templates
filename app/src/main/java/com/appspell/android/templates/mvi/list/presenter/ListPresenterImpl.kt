@@ -15,6 +15,8 @@ class ListPresenterImpl(
         val router: ListRouter
 ) : ListPresenter, OnListItemClick {
 
+    val TMP_USER_NAME = "square" //FIXME user name for testing
+
     val SAVED_VIEW_TATE = "SAVED_VIEW_STATE"
 
     lateinit var listSubscriber: Disposable
@@ -25,12 +27,12 @@ class ListPresenterImpl(
     }
 
     override fun bind() {
-        listSubscriber = interactor.requestList()
+        listSubscriber = interactor.requestList(TMP_USER_NAME)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { viewState: ListViewState -> updateUI(viewState) }
 
         refreshSubscriber = view.refreshIntent()
-                .switchMap { interactor.requestList() }
+                .switchMap { interactor.refreshList() }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { viewState: ListViewState -> updateUI(viewState) }
     }

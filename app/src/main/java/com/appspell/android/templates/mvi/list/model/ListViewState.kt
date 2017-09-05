@@ -7,12 +7,14 @@ import com.appspell.android.templates.mvi.list.model.entity.DataEntity
 data class ListViewState(val loading: Boolean = false,
                          val list: List<DataEntity> = emptyList(),
                          val page: Int = 1,
-                         val user: String = "") : Parcelable {
+                         val user: String = "",
+                         val timestamp: Long = System.currentTimeMillis()) : Parcelable {
     constructor(parcel: Parcel) : this(
             parcel.readByte() != 0.toByte(),
             parcel.createTypedArrayList(DataEntity),
             parcel.readInt(),
-            parcel.readString()) {
+            parcel.readString(),
+            parcel.readLong()) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -20,6 +22,7 @@ data class ListViewState(val loading: Boolean = false,
         parcel.writeTypedList(list)
         parcel.writeInt(page)
         parcel.writeString(user)
+        parcel.writeLong(timestamp)
     }
 
     override fun describeContents(): Int {

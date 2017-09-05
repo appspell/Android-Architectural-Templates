@@ -1,5 +1,6 @@
 package com.appspell.android.templates.mvi.list.model
 
+import android.text.TextUtils
 import com.appspell.android.templates.mvi.list.model.entity.DataEntity
 import com.google.gson.GsonBuilder
 import io.reactivex.Observable
@@ -9,6 +10,8 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 class ListInteractorImpl : ListInteractor {
+    val CACHE_TIME = 60 * 1000 //Cache time in millis
+
     var viewState: ListViewState = ListViewState(true)
 
     override fun getLastViewState() = viewState
@@ -17,9 +20,17 @@ class ListInteractorImpl : ListInteractor {
         this.viewState = viewState
     }
 
-    override fun requestList(): Observable<ListViewState> {
+    override fun refreshList(): Observable<ListViewState> {
+        if (TextUtils.isEmpty(viewState.user)) {
+            //@TODO send error
+        }
+        val lastUsedUserName = viewState.user
+        viewState = ListViewState(true, timestamp = 0)
+        return requestList(lastUsedUserName)
+    }
+
+    override fun requestList(user: String): Observable<ListViewState> {
         val page = 1
-        val user = "square" //@FIXME any user name for testing
 
         return useCache()
                 .flatMap { savedViewState: ListViewState? ->
@@ -49,7 +60,9 @@ class ListInteractorImpl : ListInteractor {
     }
 
     private fun validateCache(viewState: ListViewState?, page: Int, user: String): Boolean {
-        return viewState != null && !viewState.list.isEmpty() && viewState.page == page && viewState.user == user
+        if (viewState == null) return false
+        val isOutOfDate = (System.currentTimeMillis() - viewState.timestamp) > CACHE_TIME
+        return !isOutOfDate && !viewState.list.isEmpty() && viewState.page == page && viewState.user == user
     }
 
     //@TODO use DI

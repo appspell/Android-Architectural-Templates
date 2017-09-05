@@ -4,7 +4,8 @@ import io.reactivex.Observable
 
 interface ListInteractor {
 
-    fun requestList(): Observable<ListViewState>
+    fun requestList(user: String): Observable<ListViewState>
+    fun refreshList(): Observable<ListViewState>
     fun setLastViewState(viewState: ListViewState)
     fun getLastViewState(): ListViewState?
 }
