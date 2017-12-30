@@ -28,7 +28,7 @@ class SimpleListAdapter(val listener: OnSimpleListItemClick) : RecyclerView.Adap
     }
 
     class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name: TextView = itemView.findViewById(R.id.name) as TextView
+        val name: TextView = itemView.findViewById(R.id.name)
 
         fun bind(item: String, listener: OnSimpleListItemClick) {
             name.text = item

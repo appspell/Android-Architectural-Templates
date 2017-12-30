@@ -29,8 +29,8 @@ class ListAdapter(val listener: OnListItemClick) : RecyclerView.Adapter<ListAdap
     }
 
     class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name: TextView = itemView.findViewById(R.id.name) as TextView
-        val description: TextView = itemView.findViewById(R.id.description) as TextView
+        val name: TextView = itemView.findViewById(R.id.name)
+        val description: TextView = itemView.findViewById(R.id.description)
 
         fun bind(item: DataEntity, listener: OnListItemClick) {
             name.text = item.name

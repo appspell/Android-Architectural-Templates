@@ -9,8 +9,8 @@ import android.widget.ProgressBar
 import com.appspell.android.templates.R
 
 class SimpleListViewImpl(activity: Activity) : SimpleListView {
-    private var progress: ProgressBar = activity.findViewById(R.id.progress) as ProgressBar
-    private val list: RecyclerView = activity.findViewById(R.id.list) as RecyclerView
+    private var progress: ProgressBar = activity.findViewById(R.id.progress)
+    private val list: RecyclerView = activity.findViewById(R.id.list)
 
     private lateinit var adapterSimple: SimpleListAdapter
 

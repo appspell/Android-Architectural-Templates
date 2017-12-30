@@ -10,8 +10,8 @@ import com.appspell.android.templates.mvi.list.model.entity.DataEntity
 import io.reactivex.subjects.PublishSubject
 
 class ListViewImpl(rootView: View) : ListView {
-    private val list: RecyclerView = rootView.findViewById(R.id.list) as RecyclerView
-    private var refresh: SwipeRefreshLayout = rootView.findViewById(R.id.refresh) as SwipeRefreshLayout
+    private val list: RecyclerView = rootView.findViewById(R.id.list)
+    private var refresh: SwipeRefreshLayout = rootView.findViewById(R.id.refresh)
 
     private lateinit var adapter: ListAdapter
     private val onRefreshSubject = PublishSubject.create<Boolean>()
