@@ -43,7 +43,7 @@ class ListBinderImpl(
                 .subscribe(this::updateUI))
 
         subscribers.add(view.onItemClickIntent()
-                .subscribe(this::onItemClicked))
+                .subscribe { router.openCatalogItem() })
     }
 
     override fun unBind() {
@@ -63,10 +63,6 @@ class ListBinderImpl(
     private fun updateUI(viewState: ListViewState) {
         interactor.setLastViewState(viewState)
         view.render(viewState)
-    }
-
-    private fun onItemClicked(any: Any) {
-        router.openCatalogItem()
     }
 }
 
