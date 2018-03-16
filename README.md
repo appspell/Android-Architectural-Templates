@@ -1,5 +1,10 @@
 # Android Architectural Templates
 
+* [MVI (with RxJava)](/app/src/main/java/com/appspell/android/templates/mvi/list) 
+* [MVVM (Data Dindings and Android Architecture Components)](/app/src/main/java/com/appspell/android/templates/mvvm/list)
+
+---------
+
 <h2>MVI (Model-View-Intent)</h2>
 <P>(<B>View</B>(<I>Model</I>(<STRONG>Intent</STRONG>))</P>
 
