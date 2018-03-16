@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.ProgressBar
 import com.appspell.android.templates.R
 
+@Deprecated("the newer implementation in MviListActivity and nested classes")
 class SimpleListViewImpl(activity: Activity) : SimpleListView {
     private var progress: ProgressBar = activity.findViewById(R.id.progress)
     private val list: RecyclerView = activity.findViewById(R.id.list)

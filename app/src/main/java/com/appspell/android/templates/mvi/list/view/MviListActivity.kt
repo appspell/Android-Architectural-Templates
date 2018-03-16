@@ -3,14 +3,14 @@ package com.appspell.android.templates.mvi.list.view
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.appspell.android.templates.R
+import com.appspell.android.templates.mvi.list.binder.ListBinder
+import com.appspell.android.templates.mvi.list.binder.ListBinderImpl
 import com.appspell.android.templates.mvi.list.model.ListInteractorImpl
-import com.appspell.android.templates.mvi.list.presenter.ListPresenter
-import com.appspell.android.templates.mvi.list.presenter.ListPresenterImpl
 import com.appspell.android.templates.mvi.list.router.ListRouterImpl
 
-class ListActivity : AppCompatActivity() {
+class MviListActivity : AppCompatActivity() {
 
-    lateinit var presenter: ListPresenter
+    private lateinit var binder: ListBinder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,25 +18,24 @@ class ListActivity : AppCompatActivity() {
 
         val view = ListViewImpl(findViewById(R.id.rootView))
         val interactor = ListInteractorImpl()
-        val router = ListRouterImpl()
-        presenter = ListPresenterImpl(view, interactor, router)
-        presenter.create()
-        presenter.restoreViewState(savedInstanceState)
+        val router = ListRouterImpl(this)
+        binder = ListBinderImpl(view, interactor, router)
+        binder.create()
+        binder.restoreViewState(savedInstanceState)
     }
 
     override fun onResume() {
         super.onResume()
-        presenter.bind()
+        binder.bind()
     }
 
     override fun onPause() {
-        presenter.unBind()
         super.onPause()
+        binder.unBind()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        presenter.saveViewState(outState)
+        binder.saveViewState(outState)
     }
-
 }

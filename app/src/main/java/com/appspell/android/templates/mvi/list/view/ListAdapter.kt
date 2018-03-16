@@ -7,37 +7,37 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.appspell.android.templates.R
 import com.appspell.android.templates.mvi.list.model.entity.DataEntity
+import io.reactivex.subjects.PublishSubject
 
-class ListAdapter(val listener: OnListItemClick) : RecyclerView.Adapter<ListAdapter.ListViewHolder>() {
+class ListAdapter : RecyclerView.Adapter<ListAdapter.ListViewHolder>() {
 
-    private var items = emptyList<DataEntity>()
+    var items = emptyList<DataEntity>()
+        set(value) {
+            field = value
+            //@TODO use DiffUtil
+            notifyDataSetChanged()
+        }
 
-    fun updateList(newList: List<DataEntity>) {
-        items = newList
-        //@TODO use DiffUtil
-        notifyDataSetChanged()
-    }
+    val onItemClick = PublishSubject.create<Any>()
 
     override fun getItemCount() = items.size
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder? {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         return ListViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_list, parent, false))
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        holder.bind(items[position], listener)
+        holder.bind(items[position])
     }
 
-    class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name: TextView = itemView.findViewById(R.id.name)
-        val description: TextView = itemView.findViewById(R.id.description)
+    inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val name: TextView = itemView.findViewById(R.id.name)
+        private val description: TextView = itemView.findViewById(R.id.description)
 
-        fun bind(item: DataEntity, listener: OnListItemClick) {
+        fun bind(item: DataEntity) {
             name.text = item.name
             description.text = item.description
-            itemView.setOnClickListener { listener.onItemClicked() }
+            itemView.setOnClickListener { onItemClick.onNext(Any()) }
         }
     }
-
-
 }

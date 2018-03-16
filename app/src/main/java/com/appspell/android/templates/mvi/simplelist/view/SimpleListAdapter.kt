@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.appspell.android.templates.R
 
+@Deprecated("use Subject instead of listener")
 class SimpleListAdapter(val listener: OnSimpleListItemClick) : RecyclerView.Adapter<SimpleListAdapter.ListViewHolder>() {
 
     private var items = emptyList<String>()
@@ -19,7 +20,7 @@ class SimpleListAdapter(val listener: OnSimpleListItemClick) : RecyclerView.Adap
 
     override fun getItemCount() = items.size
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder? {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         return ListViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_simple_list, parent, false))
     }
 
@@ -27,7 +28,7 @@ class SimpleListAdapter(val listener: OnSimpleListItemClick) : RecyclerView.Adap
         holder.bind(items[position], listener)
     }
 
-    class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.name)
 
         fun bind(item: String, listener: OnSimpleListItemClick) {
@@ -35,5 +36,4 @@ class SimpleListAdapter(val listener: OnSimpleListItemClick) : RecyclerView.Adap
             itemView.setOnClickListener { listener.onItemClicked() }
         }
     }
-
 }

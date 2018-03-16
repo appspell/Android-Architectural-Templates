@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Architectural Templates</string>
+    <string name="stub_on_item_click">on item clicked</string>
 </resources>

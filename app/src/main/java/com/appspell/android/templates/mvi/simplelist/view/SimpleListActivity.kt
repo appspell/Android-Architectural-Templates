@@ -8,6 +8,7 @@ import com.appspell.android.templates.mvi.simplelist.di.SimpleListModule
 import com.appspell.android.templates.mvi.simplelist.presenter.SimpleListPresenter
 import javax.inject.Inject
 
+@Deprecated("the newer implementation in MviListActivity and nested classes")
 class SimpleListActivity : AppCompatActivity() {
 
     @Inject

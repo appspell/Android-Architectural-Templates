@@ -11,7 +11,7 @@ interface GitHubAPI {
     fun getRepos(@Path("user") user: String, @Query("page") page: Int, @Query("per_page") perPage: Int): Observable<List<DataEntity>>
 
     companion object {
-        val ITEMS_PER_PAGE = 100
-        val BASE_URL = "https://api.github.com"
+        const val ITEMS_PER_PAGE = 50
+        const val BASE_URL = "https://api.github.com"
     }
 }

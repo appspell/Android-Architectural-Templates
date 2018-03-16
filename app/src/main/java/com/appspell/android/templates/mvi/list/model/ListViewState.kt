@@ -14,8 +14,7 @@ data class ListViewState(val loading: Boolean = false,
             parcel.createTypedArrayList(DataEntity),
             parcel.readInt(),
             parcel.readString(),
-            parcel.readLong()) {
-    }
+            parcel.readLong())
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeByte(if (loading) 1 else 0)
@@ -38,5 +37,4 @@ data class ListViewState(val loading: Boolean = false,
             return arrayOfNulls(size)
         }
     }
-
 }

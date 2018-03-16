@@ -8,6 +8,7 @@ import com.appspell.android.templates.mvi.simplelist.view.SimpleListView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 
+@Deprecated("the newer implementation in MviListActivity and nested classes")
 class SimpleListPresenterImpl(
         val viewSimple: SimpleListView,
         val interactorSimple: SimpleListInteractor,
