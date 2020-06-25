@@ -1,6 +1,6 @@
 # Android Architectural Templates
 
-* [MVI (with RxJava)](/app/src/main/java/com/appspell/android/templates/mvi/list) 
+* @Deprecated("now I prefere different approach") [MVI (with RxJava)](/app/src/main/java/com/appspell/android/templates/mvi/list) 
 * [MVVM (Data Dindings and Android Architecture Components)](/app/src/main/java/com/appspell/android/templates/mvvm/list)
 
 ---------
