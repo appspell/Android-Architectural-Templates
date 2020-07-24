@@ -5,7 +5,7 @@ import android.view.View
 import androidx.annotation.CallSuper
 import com.appspell.android.templates.mvvm.base.gone
 import com.appspell.android.templates.mvvm.base.visible
-import kotlinx.android.synthetic.main.activity_mvvm_list.view.*
+import kotlinx.android.synthetic.main.fragment_mvvm_list.view.*
 import javax.inject.Inject
 
 abstract class MvvmListView {

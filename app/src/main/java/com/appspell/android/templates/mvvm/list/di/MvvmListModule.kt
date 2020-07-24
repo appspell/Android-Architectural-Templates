@@ -1,6 +1,6 @@
 package com.appspell.android.templates.mvvm.list.di
 
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.appspell.android.templates.mvvm.base.viewModel
 import com.appspell.android.templates.mvvm.list.*
 import dagger.Binds
@@ -17,18 +17,20 @@ abstract class MvvmListModule {
         @Provides
         @JvmStatic
         fun provideViewModel(
-            activity: AppCompatActivity,
+            fragment: Fragment,
             repository: MvvmListViewRepository
         ): MvvmListViewModel =
-            activity.viewModel { MvvmListViewModelImpl(repository = repository) }
+            fragment.viewModel { MvvmListViewModelImpl(repository = repository) }
 
         @Provides
         @JvmStatic
+        @Singleton
         fun provideGithubAPI(retrofit: Retrofit): ApiService =
             retrofit.create(ApiService::class.java)
     }
 
     @Binds
+    @Singleton
     abstract fun bindBinder(impl: MvvmListBinderImpl): MvvmListBinder
 
     @Binds

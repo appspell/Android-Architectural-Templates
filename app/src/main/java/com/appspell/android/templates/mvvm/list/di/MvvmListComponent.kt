@@ -1,8 +1,8 @@
 package com.appspell.android.templates.mvvm.list.di
 
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.appspell.android.templates.mvvm.di.NetworkModule
-import com.appspell.android.templates.mvvm.list.MvvmListActivity
+import com.appspell.android.templates.mvvm.list.MvvmListFragment
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -19,10 +19,10 @@ interface MvvmListComponent {
     interface Builder {
 
         @BindsInstance
-        fun activity(activity: AppCompatActivity): Builder
+        fun fragment(fragment: Fragment): Builder
 
         fun build(): MvvmListComponent
     }
 
-    fun inject(activity: MvvmListActivity)
+    fun inject(fragment: MvvmListFragment)
 }
