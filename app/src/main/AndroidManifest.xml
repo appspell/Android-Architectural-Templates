@@ -11,15 +11,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".mvi.list.view.MviListActivity"
-            android:label="@string/title_mvi_list_activity">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
 
         <activity
             android:name=".mvvm.list.MvvmListActivity"
@@ -31,13 +22,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".mvi.simplelist.view.SimpleListActivity">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN"/>-->
-
-            <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
-        </activity>
     </application>
 
 </manifest>

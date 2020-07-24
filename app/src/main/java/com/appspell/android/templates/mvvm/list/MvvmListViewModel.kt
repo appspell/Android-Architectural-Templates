@@ -1,49 +1,36 @@
 package com.appspell.android.templates.mvvm.list
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.ViewModel
-import android.databinding.ObservableBoolean
-import android.support.v4.widget.SwipeRefreshLayout
-import com.appspell.android.templates.mvvm.base.map
-
-private const val USER_FOR_TESTS = "appspell"
-
-data class ListItem(val id: Long,
-                    val name: String,
-                    val description: String)
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.appspell.android.templates.mvvm.base.doOnNext
 
 abstract class MvvmListViewModel : ViewModel() {
-    val showProgress = ObservableBoolean(true)
-    abstract val adapter: MvvmListAdapter
-    abstract val onRefreshListener: SwipeRefreshLayout.OnRefreshListener
+    abstract val items: LiveData<List<Item>?>
+    abstract val error: LiveData<String?>
+    abstract val showLoader: LiveData<Boolean?>
+
+    abstract val result: LiveData<Result>
 }
 
-class MvvmListViewModelImpl : MvvmListViewModel() {
+class MvvmListViewModelImpl(repository: MvvmListViewRepository) : MvvmListViewModel() {
 
-    private val repository: MvvmListViewRepository = MvvmListViewRepositoryImpl()
+    override val items = MutableLiveData<List<Item>?>()
+    override val error = MutableLiveData<String?>()
+    override val showLoader = MutableLiveData<Boolean?>()
 
-    override val adapter = MvvmListAdapter()
-
-    override val onRefreshListener = SwipeRefreshLayout.OnRefreshListener(this::onRefresh)
-
-    val itemMediator: LiveData<Unit> = repository.items.map(this::itemsChanged)
+    override val result = repository.result.doOnNext { result -> handleResult(result) }
 
     init {
-        repository.fetch(USER_FOR_TESTS)
+        repository.fetch()
+
+        showLoader.value = true
     }
 
-    private fun itemsChanged(list: List<DataEntity>) {
-        if (list.isEmpty()) {
-            showProgress.set(true)
-        } else {
-            showProgress.set(false)
-            val items = list.map { ListItem(id = it.id, name = it.name, description = it.description) } //TODO should be in background
-            adapter.items = items
-        }
-    }
+    private fun handleResult(result: Result) {
+        items.value = result.list
+        error.value = result.error?.message
 
-    private fun onRefresh() {
-        showProgress.set(true)
-        repository.retry()
+        showLoader.value = false
     }
 }

@@ -1,14 +1,22 @@
 package com.appspell.android.templates.mvvm.base
 
+import android.accounts.NetworkErrorException
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-fun <T> Call<T>.request(success: (Int?, T?) -> Unit,
-                        error: (Throwable?) -> Unit) {
+class NetworkErrorException : Exception()
+
+fun <T> Call<T>.enqueueWithResult(
+    success: (T?) -> Unit,
+    error: (Throwable?) -> Unit
+) {
     this.enqueue(object : Callback<T> {
         override fun onResponse(call: Call<T>?, response: Response<T>?) {
-            success.invoke(response?.code(), response?.body())
+            when (response?.code()) {
+                in 200..399 -> success.invoke(response?.body())
+                else -> error.invoke(NetworkErrorException())
+            }
         }
 
         override fun onFailure(call: Call<T>?, throwable: Throwable?) {

@@ -1,34 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <data>
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <variable
-            name="viewModel"
-            type="com.appspell.android.templates.mvvm.list.MvvmListViewModel" />
-    </data>
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_collapseMode="pin"
+            app:title="@string/title_mvvm_list_activity">
 
-    <android.support.constraint.ConstraintLayout
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:animateLayoutChanges="true">
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:listitem="@layout/item_list" />
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:isRefreshing="@{viewModel.showProgress}"
-            app:onRefreshListener="@{viewModel.onRefreshListener}">
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                app:recyclerAdapter="@{viewModel.adapter}"
-                tools:listitem="@layout/item_list" />
+    <TextView
+        android:id="@+id/error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 
-        </android.support.v4.widget.SwipeRefreshLayout>
-
-    </android.support.constraint.ConstraintLayout>
-</layout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

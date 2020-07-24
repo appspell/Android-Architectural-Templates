@@ -1,23 +1,30 @@
 package com.appspell.android.templates.mvvm.list
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
-import android.support.v7.app.AppCompatActivity
-import com.appspell.android.templates.databinding.ActivityMvvmListBinding
+import android.view.View
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
+import javax.inject.Inject
 
-class MvvmListBinder(activity: AppCompatActivity,
-                     binding: ActivityMvvmListBinding) {
+interface MvvmListBinder {
+    fun bindView(containerView: View)
+    fun bindLifecycle(owner: LifecycleOwner)
+}
 
-    private val viewModel = ViewModelProviders.of(activity).get(MvvmListViewModelImpl::class.java)
+class MvvmListBinderImpl @Inject constructor(
+    private val view: MvvmListView,
+    private val router: MvvmListRouter,
+    private val viewModel: MvvmListViewModel
+) : MvvmListBinder {
 
-    init {
-        binding.viewModel = viewModel
+    override fun bindView(containerView: View) {
+        view.bind(containerView)
     }
 
-    fun bind(owner: LifecycleOwner) {
-        viewModel.itemMediator.observe(owner, Observer { doNothing() })
-    }
+    override fun bindLifecycle(owner: LifecycleOwner) {
+        viewModel.items.observe(owner, Observer(view::updateItems))
+        viewModel.error.observe(owner, Observer(view::showError))
+        viewModel.showLoader.observe(owner, Observer(view::showLoader))
 
-    private fun doNothing() {} //TODO it's a workaround against optimizations in compilator
+        viewModel.result.observe(owner, Observer {})
+    }
 }
