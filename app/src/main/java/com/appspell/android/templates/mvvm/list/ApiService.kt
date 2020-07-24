@@ -2,11 +2,10 @@ package com.appspell.android.templates.mvvm.list
 
 import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Path
 
 interface ApiService {
-    @GET("/users/{user}/repos")
-    fun fetchList(@Path("user") user: String): Call<List<ItemDTO>>
+    @GET("https://run.mocky.io/v3/c9850641-caf4-49da-b309-72d1e0fdf3c4/?mocky-delay=500ms")
+    fun fetchList(): Call<List<ItemDTO>>
 
     companion object {
         const val BASE_URL = "https://api.github.com"
@@ -14,7 +13,7 @@ interface ApiService {
 }
 
 data class ItemDTO(
-    val id: Long,
+    val id: String,
     val name: String,
     val description: String
 )

@@ -23,7 +23,7 @@ class MvvmListViewRepositoryImpl @Inject constructor(private val api: ApiService
     override val result = MutableLiveData<Result>()
 
     override fun fetch() {
-        api.fetchList(user = "appspell").enqueueWithResult(
+        api.fetchList().enqueueWithResult(
             success = { list ->
                 result.value = Result(list = list?.map { it.toVO() } ?: emptyList())
             },
