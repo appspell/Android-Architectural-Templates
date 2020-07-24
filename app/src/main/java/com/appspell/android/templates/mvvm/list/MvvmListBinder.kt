@@ -32,6 +32,8 @@ class MvvmListBinderImpl @Inject constructor(
         viewModel.error.observe(owner, Observer(view::showError))
         viewModel.showLoader.observe(owner, Observer(view::showLoader))
 
+        viewModel.openScreenEvent.observe(owner, Observer(router::openDetails))
+
         viewModel.result.observe(owner, Observer {})
     }
 }

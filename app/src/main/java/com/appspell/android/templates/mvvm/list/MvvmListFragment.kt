@@ -43,6 +43,6 @@ class MvvmListFragment : Fragment() {
         Log.i(DEBUG_LOG_TAG, "Fragment.onViewCreated")
 
         binder.bindView(view)
-        binder.bindLifecycle(viewLifecycleOwner)
+        binder.bindLifecycle(this)
     }
 }

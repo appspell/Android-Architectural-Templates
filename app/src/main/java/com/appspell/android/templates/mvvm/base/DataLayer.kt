@@ -10,7 +10,7 @@ class NetworkErrorException : Exception()
 fun <T> Call<T>.enqueueWithResult(
     success: (T?) -> Unit,
     error: (Throwable?) -> Unit
-) {
+): Call<T> {
     this.enqueue(object : Callback<T> {
         override fun onResponse(call: Call<T>?, response: Response<T>?) {
             when (response?.code()) {
@@ -23,4 +23,5 @@ fun <T> Call<T>.enqueueWithResult(
             error.invoke(throwable)
         }
     })
+    return this
 }

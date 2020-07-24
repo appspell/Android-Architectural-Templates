@@ -11,27 +11,30 @@ abstract class MvvmListViewModel : ViewModel() {
     abstract val error: LiveData<String?>
     abstract val showLoader: LiveData<Boolean?>
 
+    abstract val openScreenEvent: LiveData<Int?>
+
     abstract val result: LiveData<Result>
 }
 
-class MvvmListViewModelImpl(repository: MvvmListViewRepository) : MvvmListViewModel() {
+class MvvmListViewModelImpl(private val repository: MvvmListViewRepository) : MvvmListViewModel() {
 
     override val items = MutableLiveData<List<Item>?>()
     override val error = MutableLiveData<String?>()
     override val showLoader = MutableLiveData<Boolean?>()
 
+    override val openScreenEvent = MutableLiveData<Int?>()
+
     override val result = repository.result.doOnNext { result -> handleResult(result) }
 
     init {
         Log.i(DEBUG_LOG_TAG, "ViewModel.init")
-
         repository.fetch()
 
         showLoader.value = true
     }
 
     private fun handleResult(result: Result) {
-        Log.i(DEBUG_LOG_TAG, "ViewModel.handleResult")
+        Log.e(DEBUG_LOG_TAG, "ViewModel.handleResult-${repository}")
 
         items.value = result.list
         error.value = result.error?.message
@@ -41,6 +44,7 @@ class MvvmListViewModelImpl(repository: MvvmListViewRepository) : MvvmListViewMo
 
     override fun onCleared() {
         super.onCleared()
-        Log.i(DEBUG_LOG_TAG, "ViewModel.onCleared")
+        Log.e(DEBUG_LOG_TAG, "ViewModel.onCleared-${repository}")
+        repository.release()
     }
 }

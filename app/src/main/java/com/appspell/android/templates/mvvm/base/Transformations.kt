@@ -15,15 +15,15 @@ fun <X, Y, Z> LiveData<X>.zip(
     func: (source1: X?, source2: Y?) -> Z
 ): LiveData<Z> {
     val result = MediatorLiveData<Z>()
-    result.addSource(this, { x -> result.setValue(func.invoke(x, stream.value)) })
-    result.addSource(stream, { y -> result.setValue(func.invoke(this.value, y)) })
+    result.addSource(this) { x -> result.setValue(func.invoke(x, stream.value)) }
+    result.addSource(stream) { y -> result.setValue(func.invoke(this.value, y)) }
     return result
 }
 
 fun <X> LiveData<X>.merge(stream: LiveData<X>): LiveData<X> {
     val result = MediatorLiveData<X>()
-    result.addSource(this, { x -> result.setValue(x) })
-    result.addSource(stream, { x -> result.setValue(x) })
+    result.addSource(this) { x -> result.setValue(x) }
+    result.addSource(stream) { x -> result.setValue(x) }
     return result
 }
 
@@ -36,24 +36,24 @@ fun <X, Y> LiveData<X>.mergeIgnoringType(stream: LiveData<Y>): LiveData<Any?> {
 
 fun <X, Y> LiveData<X>.mapNotNull(func: (source: X?) -> Y?): LiveData<Y> {
     val result = MediatorLiveData<Y>()
-    result.addSource(this, { x ->
+    result.addSource(this) { x ->
         val y = func.invoke(x)
         if (y != null) result.setValue(y)
-    })
+    }
     return result
 }
 
 fun <X> LiveData<X>.filter(func: (source: X?) -> Boolean): LiveData<X> {
     val result = MediatorLiveData<X>()
-    result.addSource(this, { x -> if (func.invoke(x)) result.setValue(x) })
+    result.addSource(this) { x -> if (func.invoke(x)) result.setValue(x) }
     return result
 }
 
 fun <X> LiveData<X>.filterNotNull(func: (source: X) -> Boolean): LiveData<X> {
     val result = MediatorLiveData<X>()
-    result.addSource(this, { x ->
-        if (x != null && func.invoke(x)) result.setValue(x)
-    })
+    result.addSource(this) { x ->
+        if (x != null && func.invoke(x)) result.value = x
+    }
     return result
 }
 
@@ -170,9 +170,9 @@ fun <T> LiveData<T>.distinct(): LiveData<T> {
 
 fun <X> LiveData<X?>.filterOutNull(): LiveData<X> {
     val result = MediatorLiveData<X>()
-    result.addSource(this, { x ->
-        if (x != null) result.setValue(x)
-    })
+    result.addSource(this) { x ->
+        if (x != null) result.value = x
+    }
     return result
 }
 
