@@ -1,5 +1,6 @@
 package com.appspell.android.templates.mvvm.list
 
+import android.util.Log
 import android.view.View
 import androidx.annotation.CallSuper
 import com.appspell.android.templates.mvvm.base.gone
@@ -27,7 +28,12 @@ class MvvmListViewImpl @Inject constructor() : MvvmListView() {
 
     private val adapter = MvvmListAdapter()
 
+    init {
+        Log.i(DEBUG_LOG_TAG, "View.init")
+    }
+
     override fun bind(containerView: View) {
+        Log.i(DEBUG_LOG_TAG, "View.bind")
         super.bind(containerView)
         with(containerView) {
             list.adapter = adapter
@@ -35,10 +41,12 @@ class MvvmListViewImpl @Inject constructor() : MvvmListView() {
     }
 
     override fun updateItems(items: List<Item>?) {
+        Log.i(DEBUG_LOG_TAG, "View.updateItems")
         adapter.submitList(items)
     }
 
     override fun showError(string: String?) {
+        Log.i(DEBUG_LOG_TAG, "View.showError")
         containerView?.apply {
             if (string?.isNotEmpty() == true) {
                 error.text = string
@@ -50,6 +58,7 @@ class MvvmListViewImpl @Inject constructor() : MvvmListView() {
     }
 
     override fun showLoader(show: Boolean?) {
+        Log.i(DEBUG_LOG_TAG, "View.showLoader")
         containerView?.apply {
             if (show == true) {
                 progress.visible()

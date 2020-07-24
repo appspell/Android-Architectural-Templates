@@ -4,7 +4,7 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface ApiService {
-    @GET("https://run.mocky.io/v3/c9850641-caf4-49da-b309-72d1e0fdf3c4/?mocky-delay=500ms")
+    @GET("https://run.mocky.io/v3/c9850641-caf4-49da-b309-72d1e0fdf3c4/?mocky-delay=100ms")
     fun fetchList(): Call<List<ItemDTO>>
 
     companion object {

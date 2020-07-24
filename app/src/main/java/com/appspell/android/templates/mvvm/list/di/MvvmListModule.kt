@@ -7,6 +7,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
+import javax.inject.Singleton
 
 @Module
 abstract class MvvmListModule {
@@ -31,6 +32,7 @@ abstract class MvvmListModule {
     abstract fun bindBinder(impl: MvvmListBinderImpl): MvvmListBinder
 
     @Binds
+    @Singleton
     abstract fun bindRepository(impl: MvvmListViewRepositoryImpl): MvvmListViewRepository
 
     @Binds

@@ -1,5 +1,6 @@
 package com.appspell.android.templates.mvvm.list
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,15 +23,24 @@ class MvvmListViewModelImpl(repository: MvvmListViewRepository) : MvvmListViewMo
     override val result = repository.result.doOnNext { result -> handleResult(result) }
 
     init {
+        Log.i(DEBUG_LOG_TAG, "ViewModel.init")
+
         repository.fetch()
 
         showLoader.value = true
     }
 
     private fun handleResult(result: Result) {
+        Log.i(DEBUG_LOG_TAG, "ViewModel.handleResult")
+
         items.value = result.list
         error.value = result.error?.message
 
         showLoader.value = false
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        Log.i(DEBUG_LOG_TAG, "ViewModel.onCleared")
     }
 }
