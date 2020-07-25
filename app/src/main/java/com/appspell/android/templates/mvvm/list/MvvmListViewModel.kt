@@ -3,6 +3,7 @@ package com.appspell.android.templates.mvvm.list
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.appspell.android.templates.mvvm.base.doOnNext
 
 abstract class MvvmListViewModel : ViewModel() {
@@ -15,9 +16,7 @@ abstract class MvvmListViewModel : ViewModel() {
     abstract val result: LiveData<Result>
 }
 
-class MvvmListViewModelImpl(
-    private val repository: MvvmListViewRepository
-) : MvvmListViewModel() {
+class MvvmListViewModelImpl(repository: MvvmListViewRepository) : MvvmListViewModel() {
 
     override val items = MutableLiveData<List<Item>?>()
     override val error = MutableLiveData<String?>()
@@ -28,20 +27,13 @@ class MvvmListViewModelImpl(
     override val result = repository.result.doOnNext { result -> handleResult(result) }
 
     init {
-        repository.fetch()
-
+        repository.fetch(viewModelScope)
         showLoader.value = true
     }
 
     private fun handleResult(result: Result) {
         items.value = result.list
         error.value = result.error?.message
-
         showLoader.value = false
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        repository.release()
     }
 }
