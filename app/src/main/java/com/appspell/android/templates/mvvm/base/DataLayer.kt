@@ -1,13 +1,11 @@
 package com.appspell.android.templates.mvvm.base
 
 import android.accounts.NetworkErrorException
-import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Call
-import java.io.IOException
 
 class NetworkErrorException : Exception()
 
@@ -17,32 +15,19 @@ fun <DTO, DO> Call<DTO>.enqueueInBackground(
     error: (Throwable?) -> Unit,
     coroutineScope: CoroutineScope
 ) {
-    Log.i("COR", "`enqueueInBackground` in thread ${Thread.currentThread().name}")
-    try {
-        coroutineScope.launch {
-            Log.i("COR", "`isSuccessful` in thread ${Thread.currentThread().name}")
+    coroutineScope.launch {
+        try {
             // Retrofit. Synchronously send the request and return its response
-            val response = withContext(Dispatchers.IO) {
-                Log.i("COR", "`execute` in thread ${Thread.currentThread().name}")
-                execute()
-            }
+            val response = withContext(Dispatchers.IO) { execute() }
 
             if (response.isSuccessful) {
-                Log.i("COR", "`coroutineScope` in thread ${Thread.currentThread().name}")
-                val obj = withContext(Dispatchers.Default) {
-                    Log.i("COR", "`coroutineScope` in thread ${Thread.currentThread().name}")
-                    background(response.body())
-                }
-
-                Log.i("COR", "`withContext` in thread ${Thread.currentThread().name}")
-                success.invoke(obj)
+                val obj = withContext(Dispatchers.Default) { background(response.body()) }
+                success(obj)
             } else {
-                Log.i("COR", "`else` in thread ${Thread.currentThread().name}")
-                error.invoke(NetworkErrorException())
+                error(NetworkErrorException())
             }
+        } catch (ex: Exception) {
+            error(ex)
         }
-    } catch (ex: IOException) {
-        error.invoke(ex)
     }
 }
-
