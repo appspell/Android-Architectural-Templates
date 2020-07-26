@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Call
+import java.io.IOException
 
 class NetworkErrorException : Exception()
 
@@ -26,7 +27,7 @@ fun <DTO, DO> Call<DTO>.enqueueInBackground(
             } else {
                 error(NetworkErrorException())
             }
-        } catch (ex: Exception) {
+        } catch (ex: IOException) {
             error(ex)
         }
     }
