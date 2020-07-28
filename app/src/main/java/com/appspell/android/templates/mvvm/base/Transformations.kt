@@ -1,7 +1,6 @@
 package com.appspell.android.templates.mvvm.base
 
 import androidx.lifecycle.*
-import kotlinx.coroutines.*
 import java.util.concurrent.atomic.AtomicBoolean
 
 
@@ -183,58 +182,4 @@ fun <T> MutableLiveData<T>.defaultValue(default: T): MutableLiveData<T> {
         value = default
     }
     return this
-}
-
-
-/**
- * Only during first call we need to wait till values from both streams (LiveData<X>,LiveData<Y>) will be received,
- * to prevent receiving in Ui observer useless data
- */
-fun <X, Y, Z> LiveData<X>.zipBackground(
-    stream: LiveData<Y>,
-    func: (source1: X?, source2: Y?) -> Z
-): LiveData<Z> {
-    val result = MediatorLiveData<Z>()
-    var job: Job? = null
-
-    var waitX: X? = null
-    var waitY: Y? = null
-
-    result.addSource(this) { x ->
-        job?.cancel()
-        waitX = x
-        job = result.check(waitX, waitY, func)
-    }
-    result.addSource(stream) { y ->
-        job?.cancel()
-        waitY = y
-        job = result.check(waitX, waitY, func)
-    }
-    return result
-}
-
-private fun <X, Y, Z> MediatorLiveData<Z>.check(
-    waitX: X?,
-    waitY: Y?,
-    func: (source1: X?, source2: Y?) -> Z
-): Job? {
-    return GlobalScope.launch(Dispatchers.IO) {
-        val mappedResult = func.invoke(waitX, waitY)
-        withContext(Dispatchers.Main) {
-            this@check.value = mappedResult
-        }
-    }
-}
-
-fun <X, Y> LiveData<X>.mapBackground(func: (source: X) -> Y): LiveData<Y> {
-    val result = MediatorLiveData<Y>()
-    result.addSource(this@mapBackground) {
-        GlobalScope.launch(Dispatchers.IO) {
-            val mappedResult = func.invoke(it)
-            withContext(Dispatchers.Main) {
-                result.value = mappedResult
-            }
-        }
-    }
-    return result
 }
