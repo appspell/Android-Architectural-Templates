@@ -21,12 +21,7 @@ class MvvmListBinderImpl @Inject constructor(
     }
 
     override fun bindLifecycle(owner: LifecycleOwner) {
-        viewModel.items.observe(owner, Observer(view::updateItems))
-        viewModel.error.observe(owner, Observer(view::showError))
-        viewModel.showLoader.observe(owner, Observer(view::showLoader))
-
+        viewModel.state.observe(owner, Observer(view::render))
         viewModel.openScreenEvent.observe(owner, Observer(router::openDetails))
-
-        viewModel.result.observe(owner, Observer {})
     }
 }

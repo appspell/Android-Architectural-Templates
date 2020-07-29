@@ -16,11 +16,7 @@ abstract class MvvmListView {
         this.containerView = containerView
     }
 
-    abstract fun updateItems(items: List<Item>?)
-
-    abstract fun showError(string: String?)
-
-    abstract fun showLoader(show: Boolean?)
+    abstract fun render(state: State)
 }
 
 class MvvmListViewImpl @Inject constructor() : MvvmListView() {
@@ -34,28 +30,27 @@ class MvvmListViewImpl @Inject constructor() : MvvmListView() {
         }
     }
 
-    override fun updateItems(items: List<Item>?) {
-        adapter.submitList(items)
-    }
-
-    override fun showError(string: String?) {
+    override fun render(state: State) {
         containerView?.apply {
-            if (string?.isNotEmpty() == true) {
-                error.text = string
-                error.visible()
-            } else {
-                error.gone()
+            emptyState()
+
+            when (state) {
+                State.Loading -> progress.visible()
+                is State.Error -> {
+                    error.text = state.error
+                    error.visible()
+                }
+                is State.Success -> {
+                    adapter.submitList(state.list)
+                    list.visible()
+                }
             }
         }
     }
 
-    override fun showLoader(show: Boolean?) {
-        containerView?.apply {
-            if (show == true) {
-                progress.visible()
-            } else {
-                progress.gone()
-            }
-        }
+    private fun View.emptyState() {
+        progress.gone()
+        error.gone()
+        list.gone()
     }
 }
