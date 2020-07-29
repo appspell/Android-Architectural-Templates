@@ -1,6 +1,5 @@
 package com.appspell.android.templates.mvvm.list
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -33,8 +32,6 @@ class MvvmListViewModelImpl(repository: MvvmListViewRepository) : MvvmListViewMo
     }
 
     private fun handleResult(result: Result) {
-        Log.i("COR", "`handleResult` in thread ${Thread.currentThread().name}")
-
         items.value = result.list
         error.value = result.error?.message
         showLoader.value = false
