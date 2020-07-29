@@ -18,7 +18,7 @@ class MvvmListViewRepositoryImpl @Inject constructor(
     private val api: ApiService
 ) : MvvmListViewRepository() {
 
-    override fun fetch(coroutineScope: CoroutineScope) =
+    override fun fetch(coroutineScope: CoroutineScope): LiveData<Result> =
         liveData(context = coroutineScope.coroutineContext + Dispatchers.IO) {
             try {
                 val list = api.fetchList().map { dto -> dto.convert() }

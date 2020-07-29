@@ -35,6 +35,6 @@ class MvvmListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binder.bindView(view)
-        binder.bindLifecycle(this)
+        binder.bindLifecycle(viewLifecycleOwner)
     }
 }
