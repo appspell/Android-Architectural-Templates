@@ -1,5 +1,6 @@
 package com.appspell.android.templates.mvvm.list
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,14 +25,16 @@ class MvvmListViewModelImpl(repository: MvvmListViewRepository) : MvvmListViewMo
 
     override val openScreenEvent = MutableLiveData<Int?>()
 
-    override val result = repository.result.doOnNext { result -> handleResult(result) }
+    override val result =
+        repository.fetch(viewModelScope).doOnNext { result -> handleResult(result) }
 
     init {
-        repository.fetch(viewModelScope)
         showLoader.value = true
     }
 
     private fun handleResult(result: Result) {
+        Log.i("COR", "`handleResult` in thread ${Thread.currentThread().name}")
+
         items.value = result.list
         error.value = result.error?.message
         showLoader.value = false

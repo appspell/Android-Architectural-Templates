@@ -1,44 +1,32 @@
 package com.appspell.android.templates.mvvm.list
 
-import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.appspell.android.templates.mvvm.base.enqueueInBackground
+import androidx.lifecycle.liveData
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import java.io.IOException
 import javax.inject.Inject
 
 data class Result(val list: List<Item> = emptyList(), val error: Throwable? = null)
 
 abstract class MvvmListViewRepository {
 
-    abstract val result: LiveData<Result>
-
-    abstract fun fetch(coroutineScope: CoroutineScope)
+    abstract fun fetch(coroutineScope: CoroutineScope): LiveData<Result>
 }
-
-//data class Result(val list: List<Item>, val error: Throwable)
 
 class MvvmListViewRepositoryImpl @Inject constructor(
     private val api: ApiService
 ) : MvvmListViewRepository() {
-    override val result = MutableLiveData<Result>()
 
-    override fun fetch(coroutineScope: CoroutineScope) {
-        api.fetchList().enqueueInBackground(
-            background = { dto ->
-                Log.i("COR", "`background` in thread ${Thread.currentThread().name}")
-                dto?.map { it.convert() }
-            },
-            success = { list ->
-                Log.i("COR", "`success` in thread ${Thread.currentThread().name}")
-                result.value = Result(list = list ?: emptyList())
-            },
-            error = {
-                result.value = Result(error = it)
-            },
-            coroutineScope = coroutineScope
-        )
-    }
+    override fun fetch(coroutineScope: CoroutineScope) =
+        liveData(context = coroutineScope.coroutineContext + Dispatchers.IO) {
+            try {
+                val list = api.fetchList().map { dto -> dto.convert() }
+                emit(Result(list = list))
+            } catch (ex: IOException) {
+                emit(Result(error = ex))
+            }
+        }
 
     private fun ItemDTO.convert() = Item(title = name, description = description)
 }
