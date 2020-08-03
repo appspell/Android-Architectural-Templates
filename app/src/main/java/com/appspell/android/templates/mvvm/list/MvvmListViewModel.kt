@@ -1,6 +1,5 @@
 package com.appspell.android.templates.mvvm.list
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,9 +20,8 @@ class MvvmListViewModelImpl(repository: MvvmListViewRepository) : MvvmListViewMo
     override val state = MutableStateFlow<State>(State.Loading)
 
     init {
-        repository.fetch()
+        repository.fetchAsFlow()
             .onEach { newState ->
-                Log.e("AAAA", "MV-each - ${Thread.currentThread().name}")
                 state.value = newState
             }
             .launchIn(viewModelScope)

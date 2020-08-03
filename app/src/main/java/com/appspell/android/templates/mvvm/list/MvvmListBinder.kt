@@ -1,11 +1,9 @@
 package com.appspell.android.templates.mvvm.list
 
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -28,14 +26,9 @@ class MvvmListBinderImpl @Inject constructor(
 
     override fun bindLifecycle(owner: LifecycleOwner) {
         fragment.lifecycleScope.launchWhenResumed {
-            viewModel.state
-                .onEach { state ->
-                    Log.e("AAAA", "binder-onEach - ${Thread.currentThread().name}")
-                    view.render(state)
-                }
-                .catch { ex ->
-                    Log.e("AAAA", "binder-catch - ${Thread.currentThread().name}", ex)
-                }
+            viewModel.state.onEach { state ->
+                view.render(state)
+            }
                 .collect()
         }
     }
