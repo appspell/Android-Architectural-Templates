@@ -27,14 +27,13 @@ class MvvmListViewRepositoryImpl @Inject constructor(
                 Log.e("AAAA", "success - ${Thread.currentThread().name}")
                 State.Success(list)
             }
-            .onStart {
+            .onStart<State> {
                 Log.e("AAAA", "start - ${Thread.currentThread().name}")
-//                State.Loading
-                State.Error("loading")
+                emit(State.Loading)
             }
             .catch { ex ->
                 Log.e("AAAA", "catch - ${Thread.currentThread().name}", ex)
-                State.Error(ex.message.orEmpty())
+                emit(State.Error(ex.message.orEmpty()))
             }
 //            .flowOn(Dispatchers.Default)
 
