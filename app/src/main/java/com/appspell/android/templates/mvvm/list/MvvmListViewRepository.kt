@@ -1,31 +1,28 @@
 package com.appspell.android.templates.mvvm.list
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import java.io.IOException
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 abstract class MvvmListViewRepository {
 
-    abstract fun fetch(coroutineScope: CoroutineScope): LiveData<State>
+    abstract fun fetch(): Flow<State>
 }
 
 class MvvmListViewRepositoryImpl @Inject constructor(
     private val api: ApiService
 ) : MvvmListViewRepository() {
 
-    override fun fetch(coroutineScope: CoroutineScope): LiveData<State> =
-        liveData(context = coroutineScope.coroutineContext + Dispatchers.IO) {
-            try {
-                emit(State.Loading)
-                val list = api.fetchList().map { dto -> dto.convert() }
-                emit(State.Success(list = list))
-            } catch (ex: IOException) {
-                emit(State.Error(ex.message.orEmpty()))
-            }
-        }
+    override fun fetch(): Flow<State> =
+        flow { emit(api.fetchList()) }
+            .flowOn(Dispatchers.IO)
+            .map { dto -> dto.convert() }
+            .map { list -> State.Success(list) }
+            .onStart { State.Loading }
+            .catch { ex -> State.Error(ex.message.orEmpty()) }
+            .flowOn(Dispatchers.Default)
 
-    private fun ItemDTO.convert() = Item(title = name, description = description)
+
+    private fun List<ItemDTO>.convert() =
+        map { item -> Item(title = item.name, description = item.description) }
 }

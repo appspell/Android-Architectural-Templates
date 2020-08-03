@@ -3,7 +3,7 @@ package com.appspell.android.templates.mvvm.list
 import retrofit2.http.GET
 
 interface ApiService {
-    @GET("https://run.mocky.io/v3/c9850641-caf4-49da-b309-72d1e0fdf3c4/?mocky-delay=1000ms")
+    @GET("https://run.mocky.io/v3/c9850641-caf4-49da-b309-72d1e0fdf3c4/?mocky-delay=50ms")
     suspend fun fetchList(): List<ItemDTO>
 
     companion object {

@@ -1,5 +1,6 @@
 package com.appspell.android.templates.mvvm.list
 
+import android.util.Log
 import android.view.View
 import androidx.annotation.CallSuper
 import com.appspell.android.templates.mvvm.base.gone
@@ -31,6 +32,7 @@ class MvvmListViewImpl @Inject constructor() : MvvmListView() {
     }
 
     override fun render(state: State) {
+        Log.e("AAAA", "render - ${Thread.currentThread().name}")
         containerView?.apply {
             emptyState()
 
