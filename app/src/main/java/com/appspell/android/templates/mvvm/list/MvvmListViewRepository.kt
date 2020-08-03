@@ -1,6 +1,6 @@
 package com.appspell.android.templates.mvvm.list
 
-import kotlinx.coroutines.Dispatchers
+import android.util.Log
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
@@ -14,13 +14,29 @@ class MvvmListViewRepositoryImpl @Inject constructor(
 ) : MvvmListViewRepository() {
 
     override fun fetch(): Flow<State> =
-        flow { emit(api.fetchList()) }
-            .flowOn(Dispatchers.IO)
-            .map { dto -> dto.convert() }
-            .map { list -> State.Success(list) }
-            .onStart { State.Loading }
-            .catch { ex -> State.Error(ex.message.orEmpty()) }
-            .flowOn(Dispatchers.Default)
+        flow {
+            Log.e("AAAA", "fetch - ${Thread.currentThread().name}")
+            emit(api.fetchList())
+        }
+//            .flowOn(Dispatchers.IO)
+            .map { dto ->
+                Log.e("AAAA", "convert - ${Thread.currentThread().name}")
+                dto.convert()
+            }
+            .map { list ->
+                Log.e("AAAA", "success - ${Thread.currentThread().name}")
+                State.Success(list)
+            }
+            .onStart {
+                Log.e("AAAA", "start - ${Thread.currentThread().name}")
+//                State.Loading
+                State.Error("loading")
+            }
+            .catch { ex ->
+                Log.e("AAAA", "catch - ${Thread.currentThread().name}", ex)
+                State.Error(ex.message.orEmpty())
+            }
+//            .flowOn(Dispatchers.Default)
 
 
     private fun List<ItemDTO>.convert() =

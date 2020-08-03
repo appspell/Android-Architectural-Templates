@@ -1,8 +1,13 @@
 package com.appspell.android.templates.mvvm.list
 
+import android.util.Log
 import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 interface MvvmListBinder {
@@ -11,6 +16,7 @@ interface MvvmListBinder {
 }
 
 class MvvmListBinderImpl @Inject constructor(
+    private val fragment: Fragment,
     private val view: MvvmListView,
     private val router: MvvmListRouter,
     private val viewModel: MvvmListViewModel
@@ -21,7 +27,16 @@ class MvvmListBinderImpl @Inject constructor(
     }
 
     override fun bindLifecycle(owner: LifecycleOwner) {
-        viewModel.state.observe(owner, Observer(view::render))
-        viewModel.openScreenEvent.observe(owner, Observer(router::openDetails))
+        fragment.lifecycleScope.launchWhenResumed {
+            viewModel.state
+                .onEach { state ->
+                    Log.e("AAAA", "binder-onEach - ${Thread.currentThread().name}")
+                    view.render(state)
+                }
+                .catch { ex ->
+                    Log.e("AAAA", "binder-catch - ${Thread.currentThread().name}", ex)
+                }
+                .collect()
+        }
     }
 }
