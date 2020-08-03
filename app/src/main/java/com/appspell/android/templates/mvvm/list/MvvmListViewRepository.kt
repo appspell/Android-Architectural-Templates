@@ -19,7 +19,7 @@ class MvvmListViewRepositoryImpl @Inject constructor(
             .map { dto -> dto.convert() }
             .map { list -> State.Success(list) }
             .onStart<State> { emit(State.Loading) }
-            .catch { ex -> State.Error(ex.message.orEmpty()) }
+            .catch { ex -> emit(State.Error(ex.message.orEmpty())) }
             .flowOn(Dispatchers.Default)
 
 
