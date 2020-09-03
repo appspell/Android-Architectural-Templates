@@ -18,7 +18,9 @@ Use Kotlin Flow in ViewModel and Repository.
 * [MVVM (Data Bindings and Android Architecture Components)](/app/src/main/java/com/appspell/android/templates/mvvm/list) Old
 
 Source code for my session on Droidcon Online 2020
+
 https://www.online.droidcon.com/jetpack-series-3
+
 https://www.droidcon.com/media-detail?video=451074366
 
 
