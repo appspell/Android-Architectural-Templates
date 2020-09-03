@@ -17,7 +17,9 @@ Use Kotlin Flow in ViewModel and Repository.
 * @Deprecated("now I prefere different approach") [MVI (with RxJava)](/app/src/main/java/com/appspell/android/templates/mvi/list) 
 * [MVVM (Data Bindings and Android Architecture Components)](/app/src/main/java/com/appspell/android/templates/mvvm/list) Old
 
-Source code for my session on Droidcon Online 2020 https://www.online.droidcon.com/jetpack-series-3
+Source code for my session on Droidcon Online 2020
+https://www.online.droidcon.com/jetpack-series-3
+https://www.droidcon.com/media-detail?video=451074366
 
 
 
